@@ -228,7 +228,7 @@ function render(){
   setSteps();
   if(stage===0){renderIntro();window.scrollTo({top:0,behavior:"smooth"});return;}
   if(stage===4){renderWinner();window.scrollTo({top:0,behavior:"smooth"});return;}
-  const h=heads[stage], c=CANDS[idx], nextC=CANDS[idx+1];
+  const seq=ORDERS[stage], h=heads[stage], c=CANDS[seq[idx]], nextC=(idx+1<seq.length)?CANDS[seq[idx+1]]:null;
   app.innerHTML=`
    <div class="stage-head"><h2>第${["一","二","三"][stage-1]}關 · <span>${h.t}</span></h2>
      <p>${h.p}</p><div class="progress">${idx+1} / ${CANDS.length}</div></div>
@@ -248,7 +248,7 @@ function render(){
 }
 
 function decide(liked){
-  const c=CANDS[idx];
+  const c=CANDS[ORDERS[stage][idx]];
   likes[stage][c.id]=liked;
   const top=document.getElementById("top");
   top.style.transition="transform .4s ease, opacity .4s ease";
@@ -292,7 +292,10 @@ function renderIntro(){
      <div class="tiny">預計 1 分鐘 · 共 4 關</div>
    </div>`;
 }
-function startGame(){stage=1;idx=0;render();}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+let ORDERS={1:[0,1,2,3],2:[0,1,2,3],3:[0,1,2,3]};
+function newOrders(){const b=CANDS.map((_,i)=>i);ORDERS={1:shuffle(b),2:shuffle(b),3:shuffle(b)};}
+function startGame(){newOrders();stage=1;idx=0;render();}
 
 function renderWinner(){
   const scored=CANDS.map(c=>{
@@ -343,7 +346,7 @@ function submitReason(){
 function mapLikes(s,nameById){
   const o={}; CANDS.forEach(c=>o[nameById[c.id]]=likes[s][c.id]?1:0); return o;
 }
-function restart(){stage=1;idx=0;[1,2,3].forEach(s=>Object.keys(likes[s]).forEach(k=>delete likes[s][k]));render();}
+function restart(){newOrders();stage=1;idx=0;[1,2,3].forEach(s=>Object.keys(likes[s]).forEach(k=>delete likes[s][k]));render();}
 render();
 </script>
 </body>
