@@ -83,15 +83,38 @@
   .stamp.like{left:22px;color:var(--heart);border-color:var(--heart);transform:rotate(-16deg)}
   .stamp.nope{right:22px;color:var(--nope);border-color:var(--nope);transform:rotate(16deg)}
 
-  .actions{display:flex;justify-content:center;align-items:center;gap:26px;margin-top:14px}
-  .act{width:64px;height:64px;border-radius:50%;border:none;background:#fff;cursor:pointer;
-    box-shadow:0 6px 18px rgba(28,47,78,.14);font-size:26px;display:flex;align-items:center;justify-content:center;
+  .actions{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:14px}
+  .act{width:60px;height:60px;border-radius:50%;border:none;background:#fff;cursor:pointer;
+    box-shadow:0 6px 18px rgba(28,47,78,.14);font-size:24px;display:flex;align-items:center;justify-content:center;
     transition:.15s;font-family:inherit}
   .act:hover{transform:translateY(-3px)}
   .act.nope{color:var(--nope)}
   .act.like{color:var(--heart)}
-  .act.big{width:72px;height:72px;font-size:30px}
-  .hint{text-align:center;color:#9aa7ba;font-size:12px;margin-top:12px}
+  .act.back{color:var(--muted);font-size:22px;width:52px;height:52px}
+  .act.big{width:70px;height:70px;font-size:30px}
+  .act.lock{opacity:.4;box-shadow:none}
+  .act:disabled{opacity:.3;cursor:not-allowed;transform:none;box-shadow:none}
+  .hint{text-align:center;color:#9aa7ba;font-size:12px;margin-top:12px;line-height:1.5;padding:0 10px}
+
+  /* 愛心額度條 */
+  .budget{display:flex;flex-direction:column;align-items:center;gap:4px;margin:6px auto 8px;
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 18px;max-width:340px;
+    box-shadow:0 3px 12px rgba(28,47,78,.06)}
+  .budget .bh{font-size:24px;letter-spacing:6px}
+  .budget .bt{font-size:13px;color:var(--muted)}
+  .budget .bt b{color:var(--heart);font-size:15px}
+  .budget .bt b.zero{color:var(--nope)}
+  /* 目前選擇標記 */
+  .picked{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:3;
+    font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;white-space:nowrap;
+    box-shadow:0 3px 10px rgba(28,47,78,.18)}
+  .picked.yes{background:#ffe3e9;color:var(--heart)}
+  .picked.no{background:#eef2f8;color:var(--nope)}
+  /* 提示浮字 */
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(10px);
+    background:rgba(28,47,78,.94);color:#fff;font-size:14px;font-weight:600;padding:11px 20px;
+    border-radius:24px;opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   /* Winner */
   .winner{background:var(--card);border-radius:22px;padding:26px;text-align:center;margin-top:16px;
@@ -197,7 +220,9 @@ async function sendVote(payload){
 }
 
 let stage=0, idx=0;
+const MAX_LIKE=2;                 // 每一關最多可投的愛心數
 const likes={1:{},2:{},3:{}};
+const countLikes=s=>Object.values(likes[s]).filter(v=>v===true).length;
 const app=document.getElementById("app");
 const steps=document.getElementById("steps");
 
@@ -229,26 +254,54 @@ function render(){
   if(stage===0){renderIntro();window.scrollTo({top:0,behavior:"smooth"});return;}
   if(stage===4){renderWinner();window.scrollTo({top:0,behavior:"smooth"});return;}
   const seq=ORDERS[stage], h=heads[stage], c=CANDS[seq[idx]], nextC=(idx+1<seq.length)?CANDS[seq[idx+1]]:null;
+  const used=countLikes(stage), left=MAX_LIKE-used;
+  const cur=likes[stage][c.id];                 // 這張目前的選擇：true/false/undefined
+  const canLike = cur===true || used<MAX_LIKE;   // 已投給這張、或還有額度
+  const hearts = Array.from({length:MAX_LIKE},(_,i)=>i<used?'❤':'🤍').join(" ");
+  const canBack = (idx>0)||(stage>1);
   app.innerHTML=`
    <div class="stage-head"><h2>第${["一","二","三"][stage-1]}關 · <span>${h.t}</span></h2>
-     <p>${h.p}</p><div class="progress">${idx+1} / ${CANDS.length}</div></div>
+     <p>${h.p}</p></div>
+   <div class="budget"><span class="bh">${hearts}</span>
+     <span class="bt">本關可投 <b>${MAX_LIKE}</b> 票 · 還剩 <b class="${left===0?'zero':''}">${left}</b> 顆愛心</span></div>
+   <div class="progress" style="display:block;text-align:center;margin:0 auto 4px">${idx+1} / ${CANDS.length}</div>
    <div class="deck" id="deck">
      ${nextC?`<div class="swipe-card behind">${cardInner(nextC)}</div>`:``}
      <div class="swipe-card" id="top">
        <div class="stamp like">喜歡</div><div class="stamp nope">跳過</div>
+       ${cur!==undefined?`<div class="picked ${cur?'yes':'no'}">目前：${cur?'❤ 已喜歡':'✕ 已跳過'}（可修改）</div>`:``}
        ${cardInner(c)}
      </div>
    </div>
    <div class="actions">
+     <button class="act back" onclick="goBack()" ${canBack?'':'disabled'} title="上一張">↩</button>
      <button class="act nope" onclick="decide(false)">✕</button>
-     <button class="act like big" onclick="decide(true)">❤</button>
+     <button class="act like big ${canLike?'':'lock'}" onclick="decide(true)">❤</button>
    </div>
-   <div class="hint">可以直接用手指／滑鼠拖曳卡片，或點下方按鈕</div>`;
+   <div class="hint">${left===0?'本關愛心已用完，若要改投請先「跳過」某一張，或按 ↩ 翻回去修改':'右滑／點 ❤ 喜歡，左滑／點 ✕ 跳過，↩ 可翻回上一張'}</div>
+   <div class="toast" id="toast"></div>`;
   attachDrag();
+}
+
+function showToast(msg){
+  const t=document.getElementById("toast"); if(!t)return;
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(showToast._t); showToast._t=setTimeout(()=>t.classList.remove("show"),1800);
+}
+function goBack(){
+  if(idx>0){idx--;} else if(stage>1){stage--;idx=CANDS.length-1;} else return;
+  render(); window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function decide(liked){
   const c=CANDS[ORDERS[stage][idx]];
+  if(liked && likes[stage][c.id]!==true && countLikes(stage)>=MAX_LIKE){
+    showToast("本關只能投 "+MAX_LIKE+" 顆愛心囉！");
+    const top=document.getElementById("top");
+    if(top){top.style.transition="transform .25s";top.style.transform="translateX(60px)";
+      setTimeout(()=>{top.style.transform="";},160);}
+    return;
+  }
   likes[stage][c.id]=liked;
   const top=document.getElementById("top");
   top.style.transition="transform .4s ease, opacity .4s ease";
@@ -272,7 +325,9 @@ function attachDrag(){
     top.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/18}deg)`;
     like.style.opacity=Math.max(0,dx/120); nope.style.opacity=Math.max(0,-dx/120);};
   const end=()=>{if(!dragging)return;dragging=false;
-    if(Math.abs(dx)>110){decide(dx>0);}
+    if(Math.abs(dx)>110){const wantLike=dx>0;
+      top.style.transition="transform .3s";top.style.transform="";like.style.opacity=0;nope.style.opacity=0;
+      decide(wantLike);}
     else{top.style.transition="transform .3s";top.style.transform="";like.style.opacity=0;nope.style.opacity=0;}dx=0;};
   top.addEventListener("mousedown",e=>start(e.clientX,e.clientY));
   window.addEventListener("mousemove",e=>move(e.clientX,e.clientY));
