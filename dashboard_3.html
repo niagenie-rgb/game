@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迪奧斯代言人票選｜統計後台</title>
+<style>
+  :root{--navy:#1c2f4e;--navy2:#26406a;--gold:#c9a15a;--gold-lt:#e4c88a;
+    --ink:#26303f;--muted:#6b7a90;--line:#e2e7ef;--heart:#e0526b;--card:#fff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    background:linear-gradient(160deg,#f4f6fa,#e7ecf4);color:var(--ink);min-height:100vh}
+  header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:22px 16px;text-align:center}
+  header .logo{font-size:22px;font-weight:800;letter-spacing:2px}
+  header .logo b{color:var(--gold-lt)}
+  header small{display:block;font-size:12px;letter-spacing:3px;color:#c6d2e6;margin-top:4px}
+  .wrap{max-width:900px;margin:0 auto;padding:20px 16px 50px}
+  .bar{display:flex;gap:10px;align-items:center;justify-content:center;margin:6px 0 18px;flex-wrap:wrap}
+  .btn{border:none;border-radius:24px;padding:10px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn-primary{background:linear-gradient(120deg,var(--gold),var(--gold-lt));color:#3a2c07}
+  .updated{font-size:12px;color:var(--muted)}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+  @media(max-width:560px){.kpis{grid-template-columns:1fr}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center;
+    box-shadow:0 4px 16px rgba(28,47,78,.06)}
+  .kpi .l{font-size:13px;color:var(--muted)}
+  .kpi .v{font-size:34px;font-weight:800;color:var(--navy);margin-top:4px}
+  .kpi .v small{font-size:15px;color:var(--gold);font-weight:700}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:20px;
+    box-shadow:0 4px 16px rgba(28,47,78,.06)}
+  .panel h2{font-size:17px;color:var(--navy);margin-bottom:4px}
+  .panel .sub{font-size:12px;color:var(--muted);margin-bottom:14px}
+  .row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .row .nm{width:78px;font-weight:700;color:var(--navy);font-size:14px;flex-shrink:0}
+  .track{flex:1;background:#eef2f8;border-radius:20px;height:26px;position:relative;overflow:hidden}
+  .fill{height:100%;border-radius:20px;background:linear-gradient(120deg,var(--gold),var(--gold-lt));transition:width .6s}
+  .fill.win{background:linear-gradient(120deg,#e0526b,#f0869a)}
+  .row .val{width:74px;text-align:right;font-weight:700;color:var(--navy);font-size:14px;flex-shrink:0}
+  .stage-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:720px){.stage-grid{grid-template-columns:1fr}}
+  .stage-box{background:#f7f9fc;border-radius:14px;padding:16px}
+  .stage-box h3{font-size:14px;color:var(--gold);margin-bottom:12px;text-align:center}
+  .mini{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px dashed #e2e7ef}
+  .mini:last-child{border:none}
+  .mini b{color:var(--heart)}
+  .reasons{max-height:420px;overflow-y:auto}
+  .reason{background:#f7f9fc;border-radius:12px;padding:13px 15px;margin-bottom:10px}
+  .reason .rh{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .reason .rw{font-weight:700;color:var(--navy);font-size:14px}
+  .reason .rw .pin{background:var(--gold);color:#3a2c07;font-size:11px;padding:2px 8px;border-radius:10px;margin-right:6px}
+  .reason .rt{font-size:11px;color:var(--muted)}
+  .reason .rc{font-size:14px;line-height:1.6;color:#3b4658}
+  .empty{text-align:center;color:var(--muted);padding:30px;font-size:14px}
+  .setup{background:#fff8ec;border:1px solid var(--gold);border-radius:14px;padding:16px;font-size:13px;color:#7a5a1a;line-height:1.8}
+  .setup code{background:#fff;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><b>✦ Dios</b> 迪奧斯</div>
+  <small>代言人票選 · 統計後台</small>
+</header>
+<div class="wrap">
+  <div class="bar">
+    <button class="btn btn-primary" onclick="load()">🔄 重新整理</button>
+    <span class="updated" id="updated"></span>
+  </div>
+  <div id="content"><div class="empty">載入中…</div></div>
+</div>
+
+<script>
+/* ====== 填入與遊戲相同的 Supabase 設定 ====== */
+const SUPABASE_URL = "https://yrroqndpcgaqvgxeydgn.supabase.co";  // 例：https://xxxx.supabase.co
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlycm9xbmRwY2dhcXZneGV5ZGduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1MTE0NjYsImV4cCI6MjA5MzA4NzQ2Nn0.4Zw2GWnuzbusCWrplOJSbV1_Nqp7KR_GWwQ-Ed0CDxE";  // anon public key
+
+const NAMES = ["謝震武","邰智源","羅時豐","陳隨意"];
+const FEES  = {謝震武:350,邰智源:220,羅時豐:250,陳隨意:120};
+const content=document.getElementById("content");
+
+function setupNotice(){
+  content.innerHTML=`<div class="setup">
+    <b>尚未設定 Supabase</b><br>
+    請把這個檔案上方的 <code>SUPABASE_URL</code> 與 <code>SUPABASE_KEY</code> 填成你專案的網址與 anon public 金鑰，
+    要和遊戲 <code>index.html</code> 裡填的完全一樣，然後重新整理本頁。
+  </div>`;
+}
+
+async function load(){
+  if(!SUPABASE_URL||!SUPABASE_KEY){setupNotice();return;}
+  content.innerHTML='<div class="empty">載入中…</div>';
+  let rows=[];
+  try{
+    const res=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/votes?select=*&order=created_at.desc",{
+      headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY}});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    rows=await res.json();
+  }catch(e){
+    content.innerHTML='<div class="setup"><b>讀取失敗：</b>'+e.message+
+      '<br>請確認金鑰正確、且資料表 <code>votes</code> 已開啟可讀取（RLS 政策允許 select）。</div>';
+    return;
+  }
+  render(rows);
+  document.getElementById("updated").textContent="更新於 "+new Date().toLocaleString("zh-TW");
+}
+
+function sumStage(rows,key){
+  const t={}; NAMES.forEach(n=>t[n]=0);
+  rows.forEach(r=>{const o=r[key]||{}; NAMES.forEach(n=>{ if(o[n]) t[n]+=Number(o[n]); });});
+  return t;
+}
+function bars(obj,winMode){
+  const max=Math.max(1,...Object.values(obj));
+  return NAMES.map(n=>{
+    const v=obj[n]||0, pct=Math.round(v/max*100);
+    return `<div class="row"><div class="nm">${n}</div>
+      <div class="track"><div class="fill ${winMode?'win':''}" style="width:${pct}%"></div></div>
+      <div class="val">${v} 票</div></div>`;
+  }).join("");
+}
+
+function render(rows){
+  const n=rows.length;
+  if(n===0){content.innerHTML='<div class="panel"><div class="empty">目前還沒有人完成投票 🕐<br>把遊戲連結分享出去，這裡就會即時更新。</div></div>';return;}
+  const s1=sumStage(rows,"s1"), s2=sumStage(rows,"s2"), s3=sumStage(rows,"s3");
+  const winners={}; NAMES.forEach(x=>winners[x]=0);
+  rows.forEach(r=>{ if(r.winner&&winners[r.winner]!==undefined) winners[r.winner]++; });
+  const champ=Object.entries(winners).sort((a,b)=>b[1]-a[1])[0];
+  const reasons=rows.filter(r=>r.reason&&r.reason.trim());
+
+  content.innerHTML=`
+   <div class="kpis">
+     <div class="kpi"><div class="l">參與投票人數</div><div class="v">${n}<small> 人</small></div></div>
+     <div class="kpi"><div class="l">目前總冠軍</div><div class="v" style="font-size:26px">${champ[1]>0?champ[0]:"—"}</div></div>
+     <div class="kpi"><div class="l">冠軍得票</div><div class="v">${champ[1]}<small> / ${n}</small></div></div>
+   </div>
+
+   <div class="panel">
+     <h2>🏆 最終冠軍得票（第四關）</h2>
+     <div class="sub">每位參與者最高分的那位＝該人的一票</div>
+     ${bars(winners,true)}
+   </div>
+
+   <div class="panel">
+     <h2>❤ 各關卡得票明細</h2>
+     <div class="sub">每一關、每位候選人被按愛心的次數</div>
+     <div class="stage-grid">
+       <div class="stage-box"><h3>第一關 · 看簡歷</h3>${NAMES.map(x=>`<div class="mini"><span>${x}</span><b>${s1[x]}</b></div>`).join("")}</div>
+       <div class="stage-box"><h3>第二關 · 看照片</h3>${NAMES.map(x=>`<div class="mini"><span>${x}</span><b>${s2[x]}</b></div>`).join("")}</div>
+       <div class="stage-box"><h3>第三關 · 看費用</h3>${NAMES.map(x=>`<div class="mini"><span>${x}</span><b>${s3[x]}</b></div>`).join("")}</div>
+     </div>
+   </div>
+
+   <div class="panel">
+     <h2>📝 大家填寫的推薦理由（${reasons.length}）</h2>
+     <div class="sub">依時間由新到舊</div>
+     <div class="reasons">
+       ${reasons.length? reasons.map(r=>`<div class="reason">
+          <div class="rh"><div class="rw"><span class="pin">${r.winner||"—"}</span></div>
+            <div class="rt">${r.created_at?new Date(r.created_at).toLocaleString("zh-TW"):""}</div></div>
+          <div class="rc">${escapeHtml(r.reason)}</div></div>`).join("")
+        : '<div class="empty">還沒有人填寫理由</div>'}
+     </div>
+   </div>`;
+}
+function escapeHtml(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+load();
+</script>
+</body>
+</html>
