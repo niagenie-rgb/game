@@ -53,6 +53,10 @@
   .empty{text-align:center;color:var(--muted);padding:30px;font-size:14px}
   .setup{background:#fff8ec;border:1px solid var(--gold);border-radius:14px;padding:16px;font-size:13px;color:#7a5a1a;line-height:1.8}
   .setup code{background:#fff;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12px}
+  .topnav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:600px;margin:14px auto 0;padding:0 12px}
+  .topnav a{text-decoration:none;font-size:13px;font-weight:700;padding:8px 14px;border-radius:20px;
+    border:1px solid var(--line);color:var(--navy);background:#fff;white-space:nowrap}
+  .topnav a.on{background:linear-gradient(120deg,var(--gold),var(--gold-lt));color:#3a2c07;border-color:transparent}
 </style>
 </head>
 <body>
@@ -60,6 +64,13 @@
   <div class="logo"><b>✦ Dios</b> 迪奧斯</div>
   <small>代言人票選 · 統計後台</small>
 </header>
+<div class="topnav">
+  <a href="index.html">🗳️ 票選遊戲</a>
+  <a href="dashboard.html" class="on">📊 人氣結果</a>
+  <a href="wave2.html">🔍 深入評比</a>
+  <a href="final.html">👔 主管評選</a>
+  <a href="result.html">🏆 最終結果</a>
+</div>
 <div class="wrap">
   <div class="bar">
     <button class="btn btn-primary" onclick="load()">🔄 重新整理</button>

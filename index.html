@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>迪奧斯 Dios｜代言人票選遊戲</title>
 <style>
+  .topnav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:600px;margin:12px auto 0;padding:0 12px}
+  .topnav a{text-decoration:none;font-size:13px;font-weight:700;padding:8px 14px;border-radius:20px;
+    border:1px solid #e2e7ef;color:#1c2f4e;background:#fff;white-space:nowrap}
+  .topnav a.on{background:linear-gradient(120deg,#c9a15a,#e4c88a);color:#3a2c07;border-color:transparent}
   :root{
     --navy:#1c2f4e; --navy2:#26406a; --gold:#c9a15a; --gold-lt:#e4c88a;
     --card:#fff; --ink:#26303f; --muted:#6b7a90; --heart:#e0526b; --nope:#7c8aa0; --line:#e2e7ef;
@@ -155,6 +159,14 @@
   <div class="logo"><small>代言人票選遊戲</small></div>
   <div class="subtitle">右滑 ❤ 喜歡 · 左滑 ✕ 跳過</div>
 </header>
+
+<div class="topnav">
+  <a href="index.html" class="on">🗳️ 票選遊戲</a>
+  <a href="dashboard.html">📊 人氣結果</a>
+  <a href="wave2.html">🔍 深入評比</a>
+  <a href="final.html">👔 主管評選</a>
+  <a href="result.html">🏆 最終結果</a>
+</div>
 
 <div class="steps" id="steps">
   <div class="dot" data-s="1"><div class="num">1</div><div class="lbl">看簡歷</div></div>
