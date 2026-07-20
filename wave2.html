@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迪奧斯代言人｜第二波深入評比</title>
+<style>
+  :root{--navy:#1c2f4e;--navy2:#26406a;--gold:#c9a15a;--gold-lt:#e4c88a;
+    --ink:#26303f;--muted:#6b7a90;--line:#e2e7ef;--heart:#e0526b;--card:#fff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    background:linear-gradient(160deg,#f4f6fa,#e7ecf4);color:var(--ink);min-height:100vh}
+  header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:22px 16px;text-align:center}
+  header .logo{font-size:22px;font-weight:800;letter-spacing:2px}
+  header .logo b{color:var(--gold-lt)}
+  header small{display:block;font-size:12px;letter-spacing:3px;color:#c6d2e6;margin-top:4px}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+  .nav{display:flex;gap:10px;justify-content:center;margin:6px 0 18px;flex-wrap:wrap}
+  .nav a{text-decoration:none;font-size:13px;font-weight:700;padding:8px 18px;border-radius:22px;
+    border:1px solid var(--line);color:var(--navy);background:#fff}
+  .nav a.on{background:linear-gradient(120deg,var(--gold),var(--gold-lt));color:#3a2c07;border-color:transparent}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:20px;
+    box-shadow:0 4px 16px rgba(28,47,78,.06)}
+  .panel h2{font-size:18px;color:var(--navy);margin-bottom:4px}
+  .panel .sub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6}
+
+  /* 排名卡 */
+  .rankcard{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;margin-bottom:12px;
+    background:#f7f9fc;border:1px solid var(--line)}
+  .rankcard.top{background:linear-gradient(120deg,#fbf3e0,#fdf8ee);border-color:var(--gold)}
+  .rankcard .rk{font-size:22px;font-weight:800;color:var(--gold);width:34px;text-align:center}
+  .rankcard .info{flex:1;min-width:0}
+  .rankcard .nm{font-weight:800;color:var(--navy);font-size:16px}
+  .rankcard .nm .fee{font-size:12px;color:var(--muted);font-weight:500;margin-left:6px}
+  .dims{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .dim{flex:1;min-width:120px}
+  .dim .dl{font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
+  .dim .dl b{color:var(--navy)}
+  .dim .bar{height:8px;background:#e7edf5;border-radius:6px;overflow:hidden;margin-top:3px}
+  .dim .bar i{display:block;height:100%;border-radius:6px}
+  .rankcard .tot{text-align:center;flex-shrink:0;width:78px}
+  .rankcard .tot .tv{font-size:26px;font-weight:800;color:var(--navy);line-height:1}
+  .rankcard .tot .tl{font-size:10px;color:var(--muted)}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{background:#f4f6fa;color:var(--navy);font-weight:700;position:sticky;top:0}
+  td.nm{font-weight:700;color:var(--navy);text-align:left}
+  .tbl-scroll{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;background:#eef2f8;color:var(--muted)}
+  .neg-ok{color:#3a7a3a;font-weight:700}
+  .note{background:#fff8ec;border:1px solid var(--gold);border-radius:12px;padding:14px;font-size:12.5px;
+    color:#7a5a1a;line-height:1.8}
+  .note code{background:#fff;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .riskcard{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:#fbfcfe}
+  .rhd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  .rnm{font-weight:800;color:var(--navy);font-size:16px}
+  .rbadge{color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+  .rlist{list-style:none;margin:0}
+  .rlist li{display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed #e8edf4;font-size:13px;line-height:1.6}
+  .rlist li:last-child{border:none}
+  .rlist .rd{flex-shrink:0;font-size:11px;color:#fff;background:var(--muted);border-radius:8px;padding:2px 8px;height:fit-content;margin-top:2px}
+  .rlist b{color:var(--ink);font-weight:700}
+  .rimp{color:var(--muted);font-size:12px;margin-top:2px}
+  .rsum{margin-top:10px;background:#f4f6fa;border-radius:10px;padding:10px 12px;font-size:13px;color:#3b4658;line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><b>✦ Dios</b> 迪奧斯</div>
+  <small>代言人 · 第二波深入評比</small>
+</header>
+<div class="wrap">
+  <div class="nav">
+    <a href="dashboard.html">← 第一波人氣投票</a>
+    <a href="#" class="on">第二波深入評比</a>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+/* ============================================================
+   ★ 可調整設定區：改分數或權重後存檔即可，數字會自動重算 ★
+   ============================================================ */
+
+// 原始資料（來自「深入比較.xlsx」，粉絲/觀看單位：萬）
+const CAND=[
+  {name:"邰智源", fb:67,  ig:51.6, threads:20,  show:"木曜4超玩", yt:228,  fee:220, makeup:"另計",   neg:"無",
+     note:"社群 2則FB/IG同步；費用須於拍攝前支付"},
+  {name:"羅時豐", fb:20,  ig:6,    threads:2.7, show:"大牛比較讚", yt:34.5, fee:250, makeup:"另計",   neg:"無", note:""},
+  {name:"謝震武", fb:0,   ig:0,    threads:0,   show:"新聞面對面", yt:46.6, fee:350, makeup:"另計",   neg:"無",
+     note:"一次活動出席；社群平台無經營"},
+  {name:"陳隨意", fb:31,  ig:1.9,  threads:1.2, show:"世界辦桌",   yt:10.6, fee:120, makeup:"含妝髮", neg:"無", note:""}
+];
+
+// 主觀評分（1~10 分，可自行修改）
+const SUBJ={
+  產品力:{ 邰智源:8, 羅時豐:8, 謝震武:9, 陳隨意:6 },   // 形象契合、專業信任、與健康寢具的連結
+  促購力:{ 邰智源:8, 羅時豐:8, 謝震武:9, 陳隨意:7 }    // 帶動購買、與40-60高消費/長照客群的契合
+};
+
+// 近5年負面消息與代言風險（safety：分數越高＝越安全，0~100；可自行調整）
+const RISK={
+  邰智源:{ safety:85, level:"低風險", items:[
+    {date:"2018/2020", t:"業配廠商控節目違約，求償約15萬（商業合約糾紛）", impact:"影響輕微，屬商業糾紛非個人品行"},
+    {date:"歷年", t:"時事、社會議題直言敢言（如東奧為國手發聲）", impact:"多為中性偏正面，親和敢言形象"}
+  ], sum:"僅商業小糾紛與直言性格，無私德或法律重大瑕疵，代言風險低。"},
+
+  羅時豐:{ safety:65, level:"中風險", items:[
+    {date:"2024/08", t:"與合作姪子拆夥鬧翻，被爆「慣老闆」、為救么兒砍員工年終、5員工離職並遭頻道除名", impact:"勞資與家族經營負評，形象折損，需留意「慣老闆」標籤"}
+  ], sum:"勞資/家族經營爭議造成形象負評，但非法律或道德重大瑕疵，後已轉型回歸。"},
+
+  謝震武:{ safety:70, level:"中風險", items:[
+    {date:"2019~", t:"被特定政治陣營質疑立場、號召「抵制其代言」，政治色彩兩極評價", impact:"政治極化下有分眾抵制風險，非個人私德問題"},
+    {date:"2016", t:"名人代言食品廣告出包（NCC未罰）— 已逾5年，僅供參考", impact:"時間久遠，影響已淡"}
+  ], sum:"專業形象佳，主要風險來自政治標籤導致的分眾抵制，非私德瑕疵。"},
+
+  陳隨意:{ safety:75, level:"低~中風險", items:[
+    {date:"2024~2025", t:"網路盛傳「離婚、淨身出戶」——實為將財務全交太太管理，加上曾赴汽車旅館唱歌被誤會；夫妻結婚逾26年感情穩定，已多次公開合體闢謠", impact:"為已澄清的網路傳聞，實質私德瑕疵低"},
+    {date:"2025", t:"傳與女星唐儷有婚姻關係——經查證為 AI 誤傳烏龍", impact:"AI 假訊息，非事實"}
+  ], sum:"主要為已澄清的網路傳聞與 AI 烏龍，本人已正面回應、夫妻多次合體闢謠；實質負面低，惟網路聲量易有誤解，宜備妥澄清說法。"}
+};
+
+// 五大構面權重（總和會自動正規化）
+const WEIGHTS={ 社群力:20, 產品力:20, 促購力:20, CP值:20, 形象安全:20 };
+
+/* ============================================================ */
+
+const DIMS=["社群力","產品力","促購力","CP值","形象安全"];
+const DIMC={社群力:"#4f7cc4",產品力:"#59b39b",促購力:"#e08a5b",CP值:"#c9a15a",形象安全:"#b5577d"};
+const app=document.getElementById("app");
+
+function compute(){
+  const rows=CAND.map(c=>({...c, social:c.fb+c.ig+c.threads}));
+  const maxSocial=Math.max(...rows.map(r=>r.social),1);
+  rows.forEach(r=>{
+    r.社群力=Math.round(r.social/maxSocial*100);
+    r.產品力=Math.round((SUBJ.產品力[r.name]||0)*10);
+    r.促購力=Math.round((SUBJ.促購力[r.name]||0)*10);
+    r.base=(r.社群力+r.產品力+r.促購力)/3;      // 用於 CP 值的綜合表現
+    r.cpRaw=r.base/r.fee;                        // 表現÷費用，越高越划算
+  });
+  const maxCp=Math.max(...rows.map(r=>r.cpRaw),1e-9);
+  const wsum=DIMS.reduce((s,d)=>s+(WEIGHTS[d]||0),0)||1;
+  rows.forEach(r=>{
+    r.CP值=Math.round(r.cpRaw/maxCp*100);
+    r.形象安全=(RISK[r.name]&&RISK[r.name].safety)||0;
+    r.total=Math.round(DIMS.reduce((s,d)=>s+r[d]*(WEIGHTS[d]||0),0)/wsum);
+  });
+  rows.sort((a,b)=>b.total-a.total);
+  return rows;
+}
+
+function render(){
+  const rows=compute();
+  const fmt=v=>v>=1?v+"W":(v>0?(v+"W"):"—");
+  app.innerHTML=`
+   <div class="panel">
+     <h2>🏅 綜合評比排名</h2>
+     <div class="sub">五大構面加權總分（權重：社群力 ${WEIGHTS.社群力}%／產品力 ${WEIGHTS.產品力}%／促購力 ${WEIGHTS.促購力}%／CP值 ${WEIGHTS.CP值}%／形象安全 ${WEIGHTS.形象安全}%），每項滿分 100；形象安全分數越高＝越安全。</div>
+     ${rows.map((r,i)=>`
+       <div class="rankcard ${i===0?'top':''}">
+         <div class="rk">${i===0?'👑':'#'+(i+1)}</div>
+         <div class="info">
+           <div class="nm">${r.name}<span class="fee">代言費 ${r.fee} 萬</span></div>
+           <div class="dims">
+             ${DIMS.map(d=>`<div class="dim">
+               <div class="dl"><span>${d}</span><b>${r[d]}</b></div>
+               <div class="bar"><i style="width:${r[d]}%;background:${DIMC[d]}"></i></div></div>`).join("")}
+           </div>
+         </div>
+         <div class="tot"><div class="tv">${r.total}</div><div class="tl">加權總分</div></div>
+       </div>`).join("")}
+     <div class="legend">${DIMS.map(d=>`<span><i style="background:${DIMC[d]}"></i>${d}</span>`).join("")}</div>
+   </div>
+
+   <div class="panel">
+     <h2>📊 原始資料深入比較</h2>
+     <div class="sub">資料來源：深入比較.xlsx（平面、動態影片、授權「一年台灣全媒體」四位皆有，故不另列）。</div>
+     <div class="tbl-scroll"><table>
+       <tr><th>代言人</th><th>FB</th><th>IG</th><th>脆</th><th>社群合計</th>
+           <th>代言節目</th><th>YT平均觀看</th><th>報價(未稅)</th><th>妝髮/交通</th><th>負面消息</th><th>備註</th></tr>
+       ${CAND.map(c=>`<tr>
+         <td class="nm">${c.name}</td>
+         <td>${c.fb?c.fb+"W":"—"}</td><td>${c.ig?c.ig+"W":"—"}</td><td>${c.threads?c.threads+"W":"—"}</td>
+         <td><b>${(c.fb+c.ig+c.threads).toFixed(1)}W</b></td>
+         <td>${c.show}</td><td>${c.yt}W</td>
+         <td>${c.fee} 萬</td><td><span class="tag">${c.makeup}</span></td>
+         <td class="neg-ok">${c.neg}</td>
+         <td style="white-space:normal;text-align:left;max-width:200px;color:#6b7a90">${c.note||"—"}</td>
+       </tr>`).join("")}
+     </table></div>
+   </div>
+
+   <div class="panel">
+     <h2>🔎 各構面明細（計分依據）</h2>
+     <div class="tbl-scroll"><table>
+       <tr><th>代言人</th><th style="color:#4f7cc4">社群力</th><th style="color:#59b39b">產品力</th>
+           <th style="color:#e08a5b">促購力</th><th style="color:#c9a15a">CP值</th><th style="color:#b5577d">形象安全</th><th>加權總分</th></tr>
+       ${rows.map(r=>`<tr>
+         <td class="nm">${r.name}</td>
+         <td>${r.社群力}<div style="font-size:10px;color:#9aa7ba">粉絲 ${(r.social).toFixed(1)}W</div></td>
+         <td>${r.產品力}<div style="font-size:10px;color:#9aa7ba">主觀 ${SUBJ.產品力[r.name]}/10</div></td>
+         <td>${r.促購力}<div style="font-size:10px;color:#9aa7ba">主觀 ${SUBJ.促購力[r.name]}/10</div></td>
+         <td><b>${r.CP值}</b></td>
+         <td><b>${r.形象安全}</b><div style="font-size:10px;color:#9aa7ba">${RISK[r.name]?RISK[r.name].level:""}</div></td>
+         <td><b style="color:var(--navy)">${r.total}</b></td>
+       </tr>`).join("")}
+     </table></div>
+     <div class="sub" style="margin-top:12px">
+       <b>計分方式：</b>社群力＝(FB+IG+脆粉絲)相對最高者換算 0–100；產品力／促購力＝主觀 1–10 分 ×10；
+       CP值＝(社群力+產品力+促購力)平均 ÷ 代言費，再相對最高者換算 0–100（費用低又表現好者 CP 值高）。
+     </div>
+   </div>
+
+   <div class="panel">
+     <h2>⚠️ 近5年負面消息與代言影響評估</h2>
+     <div class="sub">資料為公開媒體報導整理，僅供代言風險評估參考；「安全分」越高代表形象安全越低。</div>
+     ${rows.slice().sort((a,b)=>a.形象安全-b.形象安全).map(r=>{
+        const R=RISK[r.name]||{items:[],sum:"",level:"",safety:0};
+        const col=R.safety>=80?"#3a7a3a":R.safety>=66?"#c9971f":R.safety>=56?"#d97a3a":"#c0453f";
+        return `<div class="riskcard">
+          <div class="rhd"><span class="rnm">${r.name}</span>
+            <span class="rbadge" style="background:${col}">${R.level}｜安全分 ${R.safety}</span></div>
+          <ul class="rlist">${R.items.map(it=>`<li><span class="rd">${it.date}</span>
+            <div><b>${it.t}</b><div class="rimp">影響：${it.impact}</div></div></li>`).join("")}</ul>
+          <div class="rsum">綜合評估：${R.sum}</div>
+        </div>`;
+     }).join("")}
+     <div class="sub" style="margin-top:10px">
+       主要來源：ETtoday、鏡週刊、壹蘋、TVBS、SETN、自由時報、中時、風傳媒等公開報導。
+     </div>
+   </div>
+
+   <div class="panel note">
+     <b>可自行調整：</b>打開本檔上方「設定區」，<code>SUBJ</code> 改產品力／促購力的主觀分（1~10），
+     <code>WEIGHTS</code> 改四大構面權重，存檔重整即自動重算排名。
+     「形象安全」的安全分與事件說明在 <code>RISK</code> 區塊，可依最新查證調整；妝髮/交通與合約備註已列在原始比較表供參考。
+   </div>`;
+}
+render();
+</script>
+</body>
+</html>
